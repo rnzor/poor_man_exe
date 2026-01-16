@@ -1,0 +1,111 @@
+###############################################################################
+# Poor Man's exe.dev - Caddyfile Template
+#
+# Copy this to your app folder and customize for your domain
+###############################################################################
+
+###############################################################################
+# Option 1: Simple reverse proxy (auto-HTTPS)
+###############################################################################
+# app.yourdomain.com {
+#     reverse_proxy 127.0.0.1:3000
+# }
+
+###############################################################################
+# Option 2: With Cloudflare DNS challenge (for proxied domains)
+###############################################################################
+# app.yourdomain.com {
+#     reverse_proxy 127.0.0.1:3000
+#     tls {
+#         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+#     }
+# }
+
+###############################################################################
+# Option 3: Full example with www redirect and security headers
+###############################################################################
+# app.yourdomain.com {
+#     # Redirect www to non-www
+#     @www {
+#         host www.yourdomain.com
+#     }
+#     redir @www https://yourdomain.com{uri}
+#
+#     # Main reverse proxy
+#     reverse_proxy 127.0.0.1:3000 {
+#         # Health check
+#         transport http {
+#             tls
+#             tls_insecure_skip_verify
+#         }
+#     }
+#
+#     # Security headers
+#     header {
+#         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#         X-Frame-Options "SAMEORIGIN"
+#         X-Content-Type-Options "nosniff"
+#         X-XSS-Protection "1; mode=block"
+#         Referrer-Policy "strict-origin-when-cross-origin"
+#         Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self' wss: https:; frame-ancestors 'none';"
+#     }
+#
+#     # Optional: Basic auth (like exe.dev private sharing)
+#     # basicauth {
+#     #     user1 JDJhJDEwJEVCNmdaN2J6UGh0NHo4eWcuZHJLM0hrUHdULmhzN2xMcnJqRXdKL2pOL2RsUllYMUw3Y09ML0RROyR7
+#     # }
+# }
+
+###############################################################################
+# Option 4: WebSocket support (for real-time apps)
+###############################################################################
+# chat.yourdomain.com {
+#     reverse_proxy 127.0.0.1:3000 {
+#         header_up X-Real-IP {remote}
+#         header_up X-Forwarded-For {remote}
+#         header_up X-Forwarded-Proto {scheme}
+#     }
+#
+#     # WebSocket support
+#     header {
+#         Upgrade websocket
+#         Connection keep-alive
+#     }
+# }
+
+###############################################################################
+# Option 5: Static site with SPA fallback
+###############################################################################
+# static.yourdomain.com {
+#     root * /var/www/static/public
+#     file_server
+#
+#     # SPA fallback (for React/Vue/Angular apps)
+#     try_files {path} /index.html
+#
+#     header {
+#         Cache-Control "public, max-age=31536000"
+#     }
+# }
+
+###############################################################################
+# Example: Multiple apps on one domain (subdomains)
+###############################################################################
+#
+# api.example.com {
+#     reverse_proxy 127.0.0.1:3001
+# }
+#
+# chat.example.com {
+#     reverse_proxy 127.0.0.1:3002
+# }
+#
+# www.example.com {
+#     redir https://example.com{uri}
+# }
+#
+# example.com {
+#     reverse_proxy 127.0.0.1:3000
+# }
+#
+###############################################################################

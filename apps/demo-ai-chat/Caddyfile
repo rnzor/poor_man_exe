@@ -1,0 +1,65 @@
+###############################################################################
+# AI Chat Demo - Caddyfile
+#
+# Copy this to /apps/demo-ai-chat/Caddyfile and customize
+###############################################################################
+
+# chat.yourdomain.com {
+#     reverse_proxy 127.0.0.1:8080
+#     tls {
+#         dns cloudflare {env.CLOUDFLARE_API_TOKEN}
+#     }
+#     header {
+#         Strict-Transport-Security "max-age=31536000; includeSubDomains"
+#         X-Frame-Options "SAMEORIGIN"
+#         X-Content-Type-Options "nosniff"
+#     }
+# }
+
+###############################################################################
+# For local development/testing:
+###############################################################################
+localhost:8080 {
+    reverse_proxy frontend:80 {
+        header_up Host localhost
+    }
+
+    reverse_proxy /ws/* backend:8000 {
+        header_up Host localhost
+    }
+}
+
+###############################################################################
+# Production example (uncomment and customize):
+###############################################################################
+#
+# ai.yourdomain.com {
+#     # Frontend
+#     reverse_proxy 127.0.0.1:8080 {
+#         header_up X-Real-IP {remote}
+#         header_up X-Forwarded-For {remote}
+#     }
+#
+#     # WebSocket support
+#     handle_path /ws/* {
+#         reverse_proxy 127.0.0.1:8000 {
+#             header_up Connection "upgrade"
+#             header_up Upgrade websocket
+#         }
+#     }
+#
+#     # Security headers
+#     header {
+#         Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+#         X-Frame-Options "SAMEORIGIN"
+#         X-Content-Type-Options "nosniff"
+#         X-XSS-Protection "1; mode=block"
+#         Referrer-Policy "strict-origin-when-cross-origin"
+#         Content-Security-Policy "default-src 'self'; connect-src 'self' wss: https:; font-src 'self'; img-src 'self' data:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
+#     }
+#
+#     # TLS with Let's Encrypt (automatic)
+#     tls internal
+# }
+#
+###############################################################################

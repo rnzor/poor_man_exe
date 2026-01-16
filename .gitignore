@@ -1,0 +1,86 @@
+# Editor and IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Secrets
+*.pem
+*.key
+*.crt
+secrets/
+credentials/
+
+# Build outputs
+node_modules/
+dist/
+build/
+*.egg-info/
+.eggs/
+*.pyc
+*.pyo
+__pycache__/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Docker
+docker-compose.override.yml
+.Dockerignore
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temp files
+*.tmp
+*.temp
+tmp/
+temp/
+
+# Cache
+.cache/
+.parcel-cache/
+.stylelintcache/
+
+# VCS
+.git/
+.svn/
+.hg/
+
+# Testing
+coverage/
+.nyc_output/
+
+# Project specific
+apps/*/data/
+apps/*/logs/
+apps/*/.env
+data/
+uploads/
+*.sqlite
+*.db
+
+# Secrets (should be in env vars, but just in case)
+*password*
+*secret*
+*token*
+*key*
