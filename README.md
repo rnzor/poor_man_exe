@@ -43,6 +43,7 @@ It's like having your own personal app store, but for *your* servers. Deploy any
 | 📝 **Batteries Included** | Templates for Node, Python, Static, Fullstack |
 | 🤖 **CI/CD Ready** | GitHub Actions workflows that actually work |
 | 🎮 **Demo App** | A cool AI chat to show off to your friends |
+| 🔑 **SSH Gateway CLI** | exe.dev-style CLI to manage apps via SSH |
 
 ---
 
@@ -270,6 +271,79 @@ caddy reload
 ```
 
 **Done!** 🎉 Your app is now live with HTTPS.
+
+---
+
+## 🔑 SSH Gateway CLI
+
+The SSH gateway provides an exe.dev-style CLI experience. Connect via SSH and manage your apps directly:
+
+```bash
+# Connect to the gateway
+ssh -p 2222 poor-exe@yourserver.com
+
+# Or run commands directly
+ssh -p 2222 poor-exe@yourserver.com ls
+```
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `ls` | List your apps with Docker status |
+| `new --name=X [--image=Y]` | Create a new app container |
+| `rm <app>` | Delete an app and its container |
+| `share <cmd> <vm>` | Manage sharing (public/private/port) |
+| `keys [add\|rm]` | Manage SSH keys |
+| `whoami` | Show current user info |
+| `help` | Show available commands |
+| `exit` | Disconnect |
+
+### Examples
+
+```bash
+# Create a new app with custom image
+ssh -p 2222 poor-exe@server.com new --name=myapi --image=node:20-alpine
+
+# List all your apps
+ssh -p 2222 poor-exe@server.com ls
+
+# Get JSON output (for scripting)
+ssh -p 2222 poor-exe@server.com ls --json
+
+# Attach to an app's shell
+ssh -p 2222 myapi@server.com
+
+# Set an app to public
+ssh -p 2222 poor-exe@server.com share set-public myapi
+
+# Change the HTTP port
+ssh -p 2222 poor-exe@server.com share port myapi 3000
+
+# Add a new SSH key
+ssh -p 2222 poor-exe@server.com keys add "ssh-ed25519 AAAA... user@host"
+
+# Remove an app
+ssh -p 2222 poor-exe@server.com rm myapi
+```
+
+### JSON Output
+
+All commands support `--json` flag for automation:
+
+```bash
+ssh -p 2222 poor-exe@server.com ls --json
+```
+```json
+{
+  "success": true,
+  "data": {
+    "vms": [
+      {"vm_name": "myapi", "image": "node:20-alpine", "status": "running", "created_at": "2026-01-17"}
+    ]
+  }
+}
+```
 
 ---
 
