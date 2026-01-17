@@ -1,0 +1,20 @@
+# Poor Man's exe.dev Caddy Template
+# This file serves as a starting point. 
+# The SSH gateway uses Caddy's Admin API to add routes dynamically.
+
+{
+    # Enable Admin API (required for the platform)
+    admin localhost:2019
+}
+
+# Catch-all block for the domain
+# Replace rnzlive.com with your domain
+*.rnzlive.com, rnzlive.com {
+    # This block is intentionally mostly empty.
+    # Dynamic routes will be inserted into the 'http' app config.
+    
+    handle {
+        header Content-Type text/plain
+        respond "Poor Man's exe.dev - No app found here." 404
+    }
+}

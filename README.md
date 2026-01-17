@@ -399,6 +399,11 @@ Adjust based on your app's needs. Some apps are hungry. We don't judge.
 | **Non-root Containers** | No container runs as root |
 | **Auto-HTTPS** | TLS 1.3 with modern cipher suites |
 | **Resource Limits** | Containers can't eat all your RAM |
+| **Ed25519 Host Keys** | Modern, high-security SSH host keys |
+| **SHA256 Fingerprints** | Proper SSH key fingerprint calculation |
+| **Rate Limiting** | Token bucket rate limiting per IP |
+| **Session Limits** | Max 10 concurrent sessions per key |
+| **Audit Logging** | All operations logged with IP + timestamp |
 
 ---
 

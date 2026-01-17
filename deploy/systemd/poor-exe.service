@@ -1,0 +1,21 @@
+[Unit]
+Description=Poor Man's exe.dev SSH Gateway
+After=network.target docker.service caddy.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/poor-exe
+ExecStart=/opt/poor-exe/poor-exe-gateway
+Restart=always
+RestartSec=5
+
+# Environment Configuration
+Environment=DOMAIN=rnzlive.com
+Environment=SSH_PORT=2222
+Environment=DB_PATH=/opt/poor-exe/poor-exe.db
+Environment=CADDY_URL=http://localhost:2019
+Environment=SSH_HOST_KEY_PATH=/opt/poor-exe/ssh_host_key
+
+[Install]
+WantedBy=multi-user.target
